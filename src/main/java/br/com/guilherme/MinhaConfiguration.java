@@ -2,12 +2,8 @@ package br.com.guilherme;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.CommandLinePropertySource;
 
-@Configuration
-@Profile("dev")
+@Development
 public class MinhaConfiguration {
 
 //    @Bean(name = "applicationName")
