@@ -24,8 +24,34 @@ public class VendasApplication {
             cliente.setNome("Cliente2");
             clientes.salvar(cliente);
 
+            System.out.println("Listando Clientes");
             List<Cliente> todosCliente = clientes.obterTodos();
             todosCliente.forEach(System.out::println);
+
+            System.out.println("\nAtualizando Clientes");
+            todosCliente.forEach(c ->{
+                c.setNome(c.getNome() + " atualizado.");
+                clientes.atualizar(c);
+            });
+            todosCliente = clientes.obterTodos();
+            todosCliente.forEach(System.out::println);
+
+            System.out.println("\nBuscando Clientes por Nome");
+            clientes.buscarPorNome("uilh").forEach(System.out::println);
+
+//            clientes.obterTodos().forEach(clientes::deletar);
+
+            System.out.println("\nListando Clientes");
+            todosCliente = clientes.obterTodos();
+            if(todosCliente.isEmpty()){
+                System.out.println("Nenhum cliente encontrado.");
+            }else{
+                todosCliente.forEach(System.out::println);
+            }
+
+
+
+
         };
 
     }

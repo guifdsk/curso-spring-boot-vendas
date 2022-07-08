@@ -15,6 +15,9 @@ public class Clientes {
 
     public static String INSERT = "insert into cliente (nome) values (?) ";
     public static String SELECTALL = "select * from cliente ";
+    public static String SELECT_POR_NOME = "select * from cliente where nome like ?";
+    public static String UPDATE = "update cliente set nome = ? where id = ? ";
+    public static String DELETE = "delete from cliente where id = ? ";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,11 +28,34 @@ public class Clientes {
     }
 
     public List<Cliente> obterTodos(){
-        return jdbcTemplate.query(SELECTALL, new RowMapper<Cliente>() {
+        return jdbcTemplate.query(SELECTALL, obterClienteMapper());
+    }
+
+    public List<Cliente> buscarPorNome(String nome){
+        return jdbcTemplate.query(SELECT_POR_NOME, new Object[]{"%" + nome + "%"}, obterClienteMapper());
+    }
+
+    private RowMapper<Cliente> obterClienteMapper() {
+        return new RowMapper<Cliente>() {
             @Override
             public Cliente mapRow(ResultSet resultSet, int i) throws SQLException {
                 return new Cliente(resultSet.getInt("id"), resultSet.getString("nome"));
             }
+        };
+    }
+
+    public Cliente atualizar(Cliente cliente){
+        jdbcTemplate.update(UPDATE, new Object[]{
+                cliente.getNome(),cliente.getId()
         });
+        return cliente;
+    }
+
+    public void deletar(Cliente cliente){
+        deletar(cliente.getId());
+    }
+
+    public void deletar(Integer id){
+        jdbcTemplate.update(DELETE, new Object[]{id});
     }
 }
